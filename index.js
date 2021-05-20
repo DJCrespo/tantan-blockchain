@@ -8,9 +8,10 @@ app.listen(port, () => {
     console.log('Bienvenido a la API de TanTan con blockchain');
 });
 
-app.get('/gethash', function(req, res) {
+app.get('/gethash', async function(req, res) {
     const hash = req.query.hash || 'Error';
-    res.json({hashLacchain : hash});
+    const result = await script.validate(hash);
+    res.json({validate : result});
   });
 
 app.post('/api', async function(req, res) {

@@ -6,13 +6,17 @@ const subject = 'credencitalStudent'
 const async = false;
 
 const getHash = (hash, token) => {
-    axios.get('https://api.stamping.io/getstamp/?byHash='+hash+'&token='+token)
-    .then(function (response) {
-        return (response);
-    })
-    .catch(function (err) {
-        console.log(err);
-    })
+    let validate;
+    validate = axios.get('https://api.stamping.io/getstamp/?byHash='+hash+'&token='+token)
+        .then(function (response) {
+            const obj = response;
+            console.log(obj.data.message);
+            return obj.data.message;
+        })
+        .catch(function (err) {
+            console.log(err);
+        })
+        return validate;
 }
 
 const postCredential = (evidence, data, subject, transactionType, async, token) => {
@@ -39,6 +43,13 @@ const hash = async (data) => {
 }
 
 const validate = async (hash) => {
+    console.log(hash);
+    try{
+        const validate = await getHash(hash, token);
+        return validate;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 const generateHash = (data) => {
@@ -47,3 +58,4 @@ const generateHash = (data) => {
 }
 
 exports.hash = hash;
+exports.validate = validate;
